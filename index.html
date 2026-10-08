@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Docker Compose Lab</title>
+
+<style>
+
+/* =========================
+   GENERAL
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #080d16;
+
+    color: #e5e7eb;
+}
+
+.layout {
+
+    display: flex;
+
+    min-height: 100vh;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+
+    width: 240px;
+
+    background: #0c121d;
+
+    border-right:
+        1px solid #1e293b;
+
+    padding: 25px 18px;
+
+    flex-shrink: 0;
+}
+
+.logo {
+
+    font-size: 22px;
+
+    font-weight: bold;
+
+    margin-bottom: 35px;
+}
+
+.logo span {
+
+    color: #22c55e;
+}
+
+.section-title {
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    margin:
+        25px 10px 10px;
+}
+
+.menu a {
+
+    display: block;
+
+    padding: 12px;
+
+    margin: 5px 0;
+
+    color: #94a3b8;
+
+    text-decoration: none;
+
+    border-radius: 7px;
+}
+
+.menu a:hover,
+.menu .active {
+
+    background: #162033;
+
+    color: #22c55e;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.main {
+
+    flex: 1;
+
+    padding: 28px;
+
+    overflow: auto;
+
+    min-width: 0;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+    gap: 20px;
+}
+
+.header h1 {
+
+    font-size: 26px;
+}
+
+.subtitle {
+
+    color: #64748b;
+
+    margin-top: 5px;
+
+    font-size: 13px;
+}
+
+.system-status {
+
+    padding:
+        9px 15px;
+
+    border-radius: 20px;
+
+    background: #052e1a;
+
+    border:
+        1px solid #166534;
+
+    color: #4ade80;
+
+    font-size: 13px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   METRICS
+========================= */
+
+.metrics {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.metric {
+
+    background: #0f1724;
+
+    border:
+        1px solid #1e293b;
+
+    border-radius: 10px;
+
+    padding: 20px;
+}
+
+.metric-title {
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    margin-bottom: 10px;
+}
+
+.metric-value {
+
+    font-size: 24px;
+
+    font-weight: bold;
+}
+
+.green {
+    color: #22c55e;
+}
+
+.blue {
+    color: #38bdf8;
+}
+
+.yellow {
+    color: #facc15;
+}
+
+.purple {
+    color: #a78bfa;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.grid {
+
+    display: grid;
+
+    grid-template-columns:
+        2fr 1fr;
+
+    gap: 20px;
+}
+
+
+/* =========================
+   PANEL
+========================= */
+
+.panel {
+
+    background: #0f1724;
+
+    border:
+        1px solid #1e293b;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+}
+
+.panel-title {
+
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    align-items: center;
+
+    margin-bottom: 18px;
+
+    gap: 10px;
+}
+
+.panel-title h2 {
+
+    font-size: 17px;
+}
+
+
+/* =========================
+   CONTAINERS
+========================= */
+
+.container-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.container {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content:
+        space-between;
+
+    padding: 15px;
+
+    background: #0b1320;
+
+    border:
+        1px solid #1e293b;
+
+    border-radius: 8px;
+
+    transition: 0.2s;
+}
+
+.container:hover {
+
+    border-color: #334155;
+
+    background: #0d1727;
+}
+
+.container-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+.container-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: #172033;
+
+    font-size: 19px;
+
+    flex-shrink: 0;
+}
+
+.container-name {
+
+    font-weight: bold;
+
+    font-size: 14px;
+}
+
+.container-image {
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    margin-top: 4px;
+}
+
+.container-port {
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+.status {
+
+    color: #4ade80;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+.dot {
+
+    display: inline-block;
+
+    width: 7px;
+
+    height: 7px;
+
+    background: #22c55e;
+
+    border-radius: 50%;
+
+    margin-right: 5px;
+}
+
+
+/* =========================
+   ARCHITECTURE
+========================= */
+
+.architecture {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    padding: 25px 10px;
+
+    flex-wrap: wrap;
+}
+
+.node {
+
+    padding: 14px 18px;
+
+    border:
+        1px solid #334155;
+
+    background: #111c2d;
+
+    border-radius: 8px;
+
+    text-align: center;
+
+    min-width: 115px;
+}
+
+.node-title {
+
+    font-weight: bold;
+}
+
+.node-info {
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    margin-top: 5px;
+}
+
+.arrow {
+
+    color: #22c55e;
+
+    font-size: 20px;
+}
+
+
+/* =========================
+   SERVER
+========================= */
+
+.server-info {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 10px;
+}
+
+.info-box {
+
+    background: #0b1320;
+
+    padding: 13px;
+
+    border-radius: 7px;
+
+    border:
+        1px solid #172033;
+}
+
+.info-label {
+
+    color: #64748b;
+
+    font-size: 11px;
+}
+
+.info-value {
+
+    margin-top: 5px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress {
+
+    height: 6px;
+
+    background: #1e293b;
+
+    border-radius: 10px;
+
+    margin-top: 8px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+
+    height: 100%;
+
+    background: #22c55e;
+}
+
+
+/* =========================
+   CONSOLE
+========================= */
+
+.console {
+
+    background: #05080d;
+
+    border:
+        1px solid #1e293b;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+.console-header {
+
+    padding: 10px 14px;
+
+    background: #0b111b;
+
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+.console-output {
+
+    height: 220px;
+
+    overflow-y: auto;
+
+    padding: 15px;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+.command {
+
+    color: #4ade80;
+
+    margin-top: 5px;
+}
+
+.output {
+
+    color: #94a3b8;
+
+    white-space: normal;
+}
+
+.console-input {
+
+    display: flex;
+
+    border-top:
+        1px solid #1e293b;
+}
+
+.console-input span {
+
+    padding: 12px;
+
+    color: #22c55e;
+
+    font-family: monospace;
+}
+
+.console-input input {
+
+    flex: 1;
+
+    background: transparent;
+
+    border: none;
+
+    outline: none;
+
+    color: white;
+
+    font-family: monospace;
+}
+
+
+/* =========================
+   LOGS
+========================= */
+
+.log {
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 11px;
+
+    padding: 8px 0;
+
+    color: #94a3b8;
+
+    border-bottom:
+        1px solid #172033;
+}
+
+.log:last-child {
+
+    border-bottom: none;
+}
+
+.log-time {
+
+    color: #64748b;
+
+    margin-right: 5px;
+}
+
+.log-ok {
+
+    color: #4ade80;
+
+    margin-right: 5px;
+}
+
+
+/* =========================
+   TAG
+========================= */
+
+.tag {
+
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    border-radius: 5px;
+
+    background: #162033;
+
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    margin-top: 6px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 1000px) {
+
+    .metrics {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .grid {
+
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 700px) {
+
+    .sidebar {
+
+        display: none;
+    }
+
+    .main {
+
+        padding: 15px;
+    }
+
+    .metrics {
+
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    .container {
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+    .server-info {
+
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="layout">
+
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        Docker<span>Lab</span>
+    </div>
+
+
+    <div class="section-title">
+        Principal
+    </div>
+
+    <div class="menu">
+
+        <a href="#" class="active">
+            🖥 Dashboard
+        </a>
+
+        <a href="#">
+            🐳 Contenedores
+        </a>
+
+        <a href="#">
+            🌐 Redes
+        </a>
+
+        <a href="#">
+            💾 Volúmenes
+        </a>
+
+    </div>
+
+
+    <div class="section-title">
+        Monitor
+    </div>
+
+    <div class="menu">
+
+        <a href="#">
+            📊 Recursos
+        </a>
+
+        <a href="#">
+            📜 Logs
+        </a>
+
+        <a href="#">
+            💻 Consola
+        </a>
+
+    </div>
+
+
+    <div class="section-title">
+        Sistema
+    </div>
+
+    <div class="menu">
+
+        <a href="#">
+            ⚙ Configuración
+        </a>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div>
+
+        <h1>
+            Docker Compose Lab
+        </h1>
+
+        <div class="subtitle">
+            Aplicación multicontenedor
+            sobre Debian 13
+        </div>
+
+    </div>
+
+
+    <div class="system-status">
+        ● Sistema operativo Online
+    </div>
+
+</div>
+
+
+<!-- =========================
+     METRICS
+========================= -->
+
+<div class="metrics">
+
+
+<div class="metric">
+
+    <div class="metric-title">
+        CONTENEDORES
+    </div>
+
+    <div class="metric-value blue">
+        6
+    </div>
+
+    <div class="subtitle">
+        Servicios activos
+    </div>
+
+</div>
+
+
+<div class="metric">
+
+    <div class="metric-title">
+        RED DOCKER
+    </div>
+
+    <div class="metric-value green">
+        1
+    </div>
+
+    <div class="subtitle">
+        app-network
+    </div>
+
+</div>
+
+
+<div class="metric">
+
+    <div class="metric-title">
+        VOLUMEN
+    </div>
+
+    <div class="metric-value purple">
+        1
+    </div>
+
+    <div class="subtitle">
+        db-data
+    </div>
+
+</div>
+
+
+<div class="metric">
+
+    <div class="metric-title">
+        PUERTO WEB
+    </div>
+
+    <div class="metric-value yellow">
+        8080
+    </div>
+
+    <div class="subtitle">
+        Nginx
+    </div>
+
+</div>
+
+
+</div>
+
+
+<div class="grid">
+
+
+<!-- =========================
+     LEFT COLUMN
+========================= -->
+
+<div>
+
+
+<!-- CONTAINERS -->
+
+<div class="panel">
+
+<div class="panel-title">
+
+<h2>
+Contenedores
+</h2>
+
+<span class="status">
+● 6 Running
+</span>
+
+</div>
+
+
+<div class="container-list">
+
+
+<!-- NGINX -->
+
+<div class="container">
+
+<div class="container-info">
+
+<div class="container-icon">
+🌐
+</div>
+
+<div>
+
+<div class="container-name">
+docker-nginx
+</div>
+
+<div class="container-image">
+nginx:alpine
+</div>
+
+<div class="container-port">
+Puerto: 8080 → 80
+</div>
+
+</div>
+
+</div>
+
+<span class="status">
+<span class="dot"></span>
+RUNNING
+</span>
+
+</div>
+
+
+<!-- NODE -->
+
+<div class="container">
+
+<div class="container-info">
+
+<div class="container-icon">
+⚙️
+</div>
+
+<div>
+
+<div class="container-name">
+docker-app
+</div>
+
+<div class="container-image">
+node:20-alpine
+</div>
+
+<div class="container-port">
+Puerto interno: 3000
+</div>
+
+</div>
+
+</div>
+
+<span class="status">
+<span class="dot"></span>
+RUNNING
+</span>
+
+</div>
+
+
+<!-- ADMINER -->
+
+<div class="container">
+
+<div class="container-info">
+
+<div class="container-icon">
+🗃️
+</div>
+
+<div>
+
+<div class="container-name">
+docker-adminer
+</div>
+
+<div class="container-image">
+adminer:latest
+</div>
+
+<div class="container-port">
+Puerto: 8081 → 8080
+</div>
+
+</div>
+
+</div>
+
+<span class="status">
+<span class="dot"></span>
+RUNNING
+</span>
+
+</div>
+
+
+<!-- MARIADB -->
+
+<div class="container">
+
+<div class="container-info">
+
+<div class="container-icon">
+🗄️
+</div>
+
+<div>
+
+<div class="container-name">
+docker-db
+</div>
+
+<div class="container-image">
+mariadb:11
+</div>
+
+<div class="container-port">
+Puerto interno: 3306
+</div>
+
+</div>
+
+</div>
+
+<span class="status">
+<span class="dot"></span>
+RUNNING
+</span>
+
+</div>
+
+
+<!-- REDIS -->
+
+<div class="container">
+
+<div class="container-info">
+
+<div class="container-icon">
+⚡
+</div>
+
+<div>
+
+<div class="container-name">
+docker-redis
+</div>
+
+<div class="container-image">
+redis:alpine
+</div>
+
+<div class="container-port">
+Puerto interno: 6379
+</div>
+
+</div>
+
+</div>
+
+<span class="status">
+<span class="dot"></span>
+RUNNING
+</span>
+
+</div>
+
+
+<!-- DOZZLE -->
+
+<div class="container">
+
+<div class="container-info">
+
+<div class="container-icon">
+📊
+</div>
+
+<div>
+
+<div class="container-name">
+docker-dozzle
+</div>
+
+<div class="container-image">
+amir20/dozzle:latest
+</div>
+
+<div class="container-port">
+Puerto: 9999 → 8080
+</div>
+
+</div>
+
+</div>
+
+<span class="status">
+<span class="dot"></span>
+RUNNING
+</span>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     ARCHITECTURE
+========================= -->
+
+<div class="panel">
+
+<div class="panel-title">
+
+<h2>
+Arquitectura
+</h2>
+
+<span class="status">
+app-network
+</span>
+
+</div>
+
+
+<div class="architecture">
+
+
+<div class="node">
+
+<div class="node-title">
+🌐 Nginx
+</div>
+
+<div class="node-info">
+:8080 → :80
+</div>
+
+</div>
+
+
+<div class="arrow">
+→
+</div>
+
+
+<div class="node">
+
+<div class="node-title">
+⚙️ Node.js
+</div>
+
+<div class="node-info">
+:3000
+</div>
+
+</div>
+
+
+<div class="arrow">
+↔
+</div>
+
+
+<div class="node">
+
+<div class="node-title">
+🗄️ MariaDB
+</div>
+
+<div class="node-info">
+:3306
+</div>
+
+</div>
+
+
+<div class="arrow">
+↔
+</div>
+
+
+<div class="node">
+
+<div class="node-title">
+⚡ Redis
+</div>
+
+<div class="node-info">
+:6379
+</div>
+
+</div>
+
+
+<div class="arrow">
+↔
+</div>
+
+
+<div class="node">
+
+<div class="node-title">
+🗃️ Adminer
+</div>
+
+<div class="node-info">
+:8081
+</div>
+
+</div>
+
+
+<div class="arrow">
+↔
+</div>
+
+
+<div class="node">
+
+<div class="node-title">
+📊 Dozzle
+</div>
+
+<div class="node-info">
+:9999
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     CONSOLE
+========================= -->
+
+<div class="panel">
+
+<div class="panel-title">
+
+<h2>
+Consola
+</h2>
+
+<span class="status">
+Simulada
+</span>
+
+</div>
+
+
+<div class="console">
+
+<div class="console-header">
+docker-compose@debian13
+</div>
+
+
+<div
+    class="console-output"
+    id="consoleOutput"
+>
+
+<div class="output">
+Docker Compose Lab
+</div>
+
+<div class="output">
+6 servicios detectados en la configuración.
+</div>
+
+<div class="output">
+Escribe "help" para ver los comandos.
+</div>
+
+</div>
+
+
+<div class="console-input">
+
+<span>$</span>
+
+<input
+    id="consoleInput"
+    type="text"
+    autocomplete="off"
+    placeholder="Escribe un comando..."
+>
+
+</div>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+<!-- =========================
+     RIGHT COLUMN
+========================= -->
+
+<div>
+
+
+<!-- SERVER -->
+
+<div class="panel">
+
+<div class="panel-title">
+
+<h2>
+Servidor
+</h2>
+
+<span class="status">
+● Online
+</span>
+
+</div>
+
+
+<div class="server-info">
+
+
+<div class="info-box">
+
+<div class="info-label">
+SISTEMA
+</div>
+
+<div class="info-value">
+Debian 13
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+DOCKER
+</div>
+
+<div class="info-value">
+Engine
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+IP
+</div>
+
+<div class="info-value">
+192.168.1.95
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+CONTENEDORES
+</div>
+
+<div class="info-value">
+6 / 6 Running
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+CPU
+</div>
+
+<div class="info-value">
+32%
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:32%"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+MEMORIA
+</div>
+
+<div class="info-value">
+48%
+</div>
+
+<div class="progress">
+
+<div
+class="progress-bar"
+style="width:48%"
+></div>
+
+</div>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+UPTIME
+</div>
+
+<div class="info-value">
+02:18:44
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- PERSISTENCE -->
+
+<div class="panel">
+
+<div class="panel-title">
+
+<h2>
+Persistencia
+</h2>
+
+<span class="status">
+● Activa
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+VOLUMEN DOCKER
+</div>
+
+<div class="info-value">
+db-data
+</div>
+
+<p class="subtitle">
+/var/lib/mysql
+</p>
+
+<span class="tag">
+MariaDB
+</span>
+
+</div>
+
+</div>
+
+
+<!-- NETWORK -->
+
+<div class="panel">
+
+<div class="panel-title">
+
+<h2>
+Red Docker
+</h2>
+
+<span class="status">
+● Activa
+</span>
+
+</div>
+
+
+<div class="info-box">
+
+<div class="info-label">
+NETWORK
+</div>
+
+<div class="info-value">
+app-network
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="info-box">
+
+<div class="info-label">
+SERVICIOS CONECTADOS
+</div>
+
+<div class="info-value">
+Nginx · Node · MariaDB
+</div>
+
+<div class="info-value">
+Redis · Adminer · Dozzle
+</div>
+
+</div>
+
+</div>
+
+
+<!-- LOGS -->
+
+<div class="panel">
+
+<div class="panel-title">
+
+<h2>
+Últimos eventos
+</h2>
+
+</div>
+
+
+<div class="log">
+
+<span class="log-time">
+17:20:01
+</span>
+
+<span class="log-ok">
+[OK]
+</span>
+
+Nginx iniciado
+
+</div>
+
+
+<div class="log">
+
+<span class="log-time">
+17:20:02
+</span>
+
+<span class="log-ok">
+[OK]
+</span>
+
+Node.js escuchando :3000
+
+</div>
+
+
+<div class="log">
+
+<span class="log-time">
+17:20:04
+</span>
+
+<span class="log-ok">
+[OK]
+</span>
+
+MariaDB lista
+
+</div>
+
+
+<div class="log">
+
+<span class="log-time">
+17:20:05
+</span>
+
+<span class="log-ok">
+[OK]
+</span>
+
+Redis conectado
+
+</div>
+
+
+<div class="log">
+
+<span class="log-time">
+17:20:06
+</span>
+
+<span class="log-ok">
+[OK]
+</span>
+
+Adminer disponible :8081
+
+</div>
+
+
+<div class="log">
+
+<span class="log-time">
+17:20:07
+</span>
+
+<span class="log-ok">
+[OK]
+</span>
+
+Dozzle disponible :9999
+
+</div>
+
+
+<div class="log">
+
+<span class="log-time">
+17:20:08
+</span>
+
+<span class="log-ok">
+[OK]
+</span>
+
+Red app-network activa
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</main>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+
+const input =
+document.getElementById(
+    "consoleInput"
+);
+
+
+const output =
+document.getElementById(
+    "consoleOutput"
+);
+
+
+/* =========================
+   IMPRIMIR COMANDO
+========================= */
+
+function printCommand(command) {
+
+    const line =
+    document.createElement("div");
+
+    line.className = "command";
+
+    line.textContent =
+        "$ " + command;
+
+    output.appendChild(line);
+}
+
+
+/* =========================
+   IMPRIMIR RESULTADO
+========================= */
+
+function printOutput(text) {
+
+    const line =
+    document.createElement("div");
+
+    line.className = "output";
+
+    line.innerHTML =
+        text.replace(/\n/g, "<br>");
+
+    output.appendChild(line);
+}
+
+
+/* =========================
+   CONSOLA
+========================= */
+
+input.addEventListener(
+"keydown",
+function(event) {
+
+    if(event.key !== "Enter")
+        return;
+
+
+    const command =
+        input.value.trim();
+
+
+    if(command === "")
+        return;
+
+
+    printCommand(command);
+
+
+    switch(command) {
+
+
+        case "help":
+
+            printOutput(
+`Comandos disponibles:
+
+docker compose ps
+docker compose logs
+docker ps
+docker network ls
+docker volume ls
+docker images
+clear`
+            );
+
+            break;
+
+
+        case "docker compose ps":
+
+            printOutput(
+`NAME                 STATUS
+
+docker-nginx         Up
+docker-app           Up
+docker-adminer       Up
+docker-db            Up
+docker-redis         Up
+docker-dozzle        Up`
+            );
+
+            break;
+
+
+        case "docker ps":
+
+            printOutput(
+`CONTAINER
+
+docker-nginx
+docker-app
+docker-adminer
+docker-db
+docker-redis
+docker-dozzle`
+            );
+
+            break;
+
+
+        case "docker compose logs":
+
+            printOutput(
+`nginx    | nginx started
+app      | Node.js ejecutándose en puerto 3000
+adminer  | Adminer disponible
+db       | MariaDB ready for connections
+redis    | Ready to accept connections
+dozzle   | Dozzle started`
+            );
+
+            break;
+
+
+        case "docker network ls":
+
+            printOutput(
+`NETWORK
+
+app-network`
+            );
+
+            break;
+
+
+        case "docker volume ls":
+
+            printOutput(
+`VOLUME
+
+docker-compose-practica_db-data`
+            );
+
+            break;
+
+
+        case "docker images":
+
+            printOutput(
+`nginx       nginx:alpine
+node        node:20-alpine
+adminer     adminer:latest
+mariadb     mariadb:11
+redis       redis:alpine
+dozzle      amir20/dozzle:latest`
+            );
+
+            break;
+
+
+        case "clear":
+
+            output.innerHTML = "";
+
+            break;
+
+
+        default:
+
+            printOutput(
+                "Comando no reconocido. Escribe help."
+            );
+
+    }
+
+
+    input.value = "";
+
+    output.scrollTop =
+        output.scrollHeight;
+
+});
+
+
+</script>
+
+
+</body>
+
+</html>
