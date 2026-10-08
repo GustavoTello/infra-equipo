@@ -31,13 +31,17 @@ services:
     image: mariadb:11
     container_name: docker-db
     environment:
-MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-MARIADB_DATABASE: appdb
-MARIADB_USER: appuser
-MARIADB_PASSWORD: ${MARIADB_PASSWORD}    volumes:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: appdb
+      MARIADB_USER: appuser
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    volumes:
       - db-data:/var/lib/mysql
     networks:
       - app-network
+
+
+
 
   redis:
     image: redis:alpine
