@@ -1,0 +1,14 @@
+REPORTE DEL SISTEMA
+========================
+Fecha: 2026-10-14 17:31:17
+Equipo: gustavo
+Sistema operativo: Linux
+Version: 6.12.111+deb13-amd64
+Arquitectura: x86_64
+
+USO DEL DISCO RAIZ
+========================
+Capacidad total: 37.02 GB
+Espacio utilizado: 2.69 GB
+Espacio disponible: 32.42 GB
+Porcentaje utilizado: 7.25 %
